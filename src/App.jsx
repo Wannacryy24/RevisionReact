@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'
+import UseMemo2 from './UseMemo2'
+import DeepClone from './DeepClone'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+
+  // Write a function to reverse a string without using .reverse().
+
+  function reverseString(str) {
+    if(typeof str !=='string' || str===null || str==='') return;
+    var newStr = '';
+    for(var i=str.length-1; i>=0;i--){
+      newStr = newStr.concat(str[i])
+    }
+    return newStr;
+}
+console.log(reverseString("hello"));
+
+
+  // ==========================================================================
+  // Implement a function to deep clone an object manually (without structuredClone() or JSON.parse()).
+  function deepClone(obj) {
+    if(typeof obj !== 'object' || obj === null) return obj
+
+    const clone = Array.isArray(obj) ? [] : {}
+
+    for(let key in obj){
+      clone[key] = deepClone(obj[key])
+    }
+    return clone
+}
+
+const obj = { a: 1, b: { c: 2, d: [3, 4] } };
+const clonedObj = deepClone(obj);
+console.log(clonedObj);
+
+
+// ==============================================================================================================
+//  Write a function that flattens a nested array into a single-level array using recursion.
+
+function flattenArray(arr) {
+  if(!Array.isArray(arr)) return arr;
+  
+  let result = [];
+  for (let item of arr){
+    if(Array.isArray(item)){
+      result = result.concat(flattenArray(item))
+    }
+    else{
+      result.push(item);
+    }
+  }  
+  return result
+}
+
+console.log(flattenArray([1, [2, 3, [4, 5]], 6])); 
+// Output: [1, 2, 3, 4, 5, 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* <DeepClone/> */}
     </>
   )
 }
-
-export default App
